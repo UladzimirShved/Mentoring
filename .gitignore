@@ -1,2 +1,13 @@
+Task2/.vs/*
+
 *.suo
+
+Task2/Task2/obj/*
+
 *.cache
+
+Task2/MsTestProj/bin/*
+
+Task2/MsTestProj/obj/*
+
+Task2/TestResults/*
