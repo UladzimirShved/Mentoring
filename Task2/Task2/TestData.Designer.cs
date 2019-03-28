@@ -79,6 +79,42 @@ namespace Task2 {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на RSQy6UiFJ5iEUDg2EosK.
+        /// </summary>
+        internal static string browserstackKey {
+            get {
+                return ResourceManager.GetString("browserstackKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на uladzimir5.
+        /// </summary>
+        internal static string browserstackUser {
+            get {
+                return ResourceManager.GetString("browserstackUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Task2/carData.json.
+        /// </summary>
+        internal static string InputFilePath {
+            get {
+                return ResourceManager.GetString("InputFilePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Task2/info.csv.
+        /// </summary>
+        internal static string outputFile {
+            get {
+                return ResourceManager.GetString("outputFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на 10.
         /// </summary>
         internal static string waitingTime {

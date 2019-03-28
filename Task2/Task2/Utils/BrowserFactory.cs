@@ -31,8 +31,8 @@ namespace Task2
 
                 case "remote":                    
                     DesiredCapabilities desiredCap = DesiredCapabilities.Chrome();
-                    desiredCap.SetCapability("browserstack.user", "uladzimir5");
-                    desiredCap.SetCapability("browserstack.key", "RSQy6UiFJ5iEUDg2EosK");
+                    desiredCap.SetCapability("browserstack.user", TestData.browserstackUser);
+                    desiredCap.SetCapability("browserstack.key", TestData.browserstackKey);
 
                     driver = new RemoteWebDriver(
                       new Uri("http://hub-cloud.browserstack.com/wd/hub/"), desiredCap

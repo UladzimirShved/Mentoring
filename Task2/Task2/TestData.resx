@@ -124,6 +124,18 @@
     <value>chrome</value>
     <comment>choose 1 of 2: chrome, remote (for browserstack)</comment>
   </data>
+  <data name="browserstackKey" xml:space="preserve">
+    <value>RSQy6UiFJ5iEUDg2EosK</value>
+  </data>
+  <data name="browserstackUser" xml:space="preserve">
+    <value>uladzimir5</value>
+  </data>
+  <data name="InputFilePath" xml:space="preserve">
+    <value>Task2/carData.json</value>
+  </data>
+  <data name="outputFile" xml:space="preserve">
+    <value>Task2/info.csv</value>
+  </data>
   <data name="waitingTime" xml:space="preserve">
     <value>10</value>
   </data>

@@ -11,7 +11,6 @@ namespace Task2.Utils
     {
        public static void WriteInfoToCsv(List<string> infoList)
         {
-            string filePath = "Task2/info.csv";
             string delimiter = ",";
             
 
@@ -21,7 +20,7 @@ namespace Task2.Utils
                 sb.AppendLine(string.Join(delimiter, line));
             }               
             
-            File.WriteAllText(filePath, sb.ToString());
+            File.WriteAllText(TestData.outputFile, sb.ToString());
         }
 
     }

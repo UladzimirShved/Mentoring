@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-//using Task2.Pages;
 using Task2.Utils;
 
 namespace Task2.Tests
@@ -17,7 +16,6 @@ namespace Task2.Tests
         {
             Singleton.GetInstance().Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
             Singleton.GetInstance().Manage().Window.Maximize();
-            //Singleton.GetInstance().Navigate().GoToUrl(TestData.baseUrl);
         }
 
         
@@ -26,13 +24,9 @@ namespace Task2.Tests
         public void TestSearch(Cars car)
         {
             Singleton.GetInstance().Navigate().GoToUrl(TestData.baseUrl);
-
-            
-            //MainPage.GoToTheSearchPage();
             SearchPage.StartSearch(car.Manufacture, car.Model, car.MinYear, car.MaxYear);
             CsvWriter.WriteInfoToCsv(SearchPage.GetSearchResults());
-            //Files.WriteResultToFile(SearchPage.GetSearchResults());
-            //Assert.True(SearchPage.GetSearchResults());
+
         }
 
         [OneTimeTearDown]

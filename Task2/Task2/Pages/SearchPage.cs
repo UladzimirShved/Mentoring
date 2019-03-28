@@ -27,8 +27,6 @@ namespace Task2
 
         public static void StartSearch(string manufacture, string model, int minYear, int maxYear)
         {
-            //try
-            //{
             string manufactureXpath = String.Format("//option[contains(text(),'{0}')]", manufacture);
             string modelXpath = String.Format("//option[contains(text(),'{0}')]", model);
             string minYearXpath = String.Format("//select[@name='min-year']//option[contains(text(),'{0}')]", minYear.ToString());
@@ -49,16 +47,10 @@ namespace Task2
             tmpMinYear.MyClick();
 
 
-            //minYearList.MyClick();
-            //maxYearList.MoveToElement();
             maxYearList.MyClick();
             tmpMaxYear.MyClick();
             maxYearList.MyClick();
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
+
         }
 
         public static List<string> GetSearchResults()
@@ -69,24 +61,19 @@ namespace Task2
             string tmpCarYear = "";
             string tmpCarInfo = "";
             int tmpPos = 0;
-            //var tmpPageCarsList = Singleton.GetInstance().FindElements(tmpCar.locator);
+
             List<string> carsInfo = new List<string>();
 
-            //try
-            //{
             if (Singleton.GetInstance().FindElements(fastNavigationPages.locator).Count != 0)
             {
                 while (nextPage.GetElement() != null)
                 {
                     Thread.Sleep(3000);
                     var tmpPageCarsList = Singleton.GetInstance().FindElements(tmpCar.locator);
-                    //.Where(car => car.FindElement(tmpCar.locator));
-                    //List<BaseElement> tmpPageCarsList = Singleton.GetInstance().FindElements(tmpPageCars.locator).Where(car => car.GetElement());
                     foreach (var car in tmpPageCarsList)
                     {
                         tmpCarName = car.FindElements(By.XPath(".//a//strong")).ToList().First().Text.ToString();
                         tmpCarLink = car.FindElements(By.XPath(".//a")).ToList().First().GetAttribute("href").ToString();
-                        //tmpCarLink = car.FindElement(By.XPath("//td[@class='txt']")).FindElement(By.XPath("//a")).GetAttribute("href").ToString();
                         tmpCarCost = car.FindElement(By.XPath(".//p[contains(text(), '$')]")).Text.ToString();
                         tmpPos = tmpCarCost.LastIndexOf('$');
                         tmpCarCost = tmpCarCost.Substring(0, tmpPos + 1);
@@ -119,11 +106,6 @@ namespace Task2
                 }
             }
 
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
             return carsInfo;
         }
 
