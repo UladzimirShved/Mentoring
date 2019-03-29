@@ -11,11 +11,10 @@ namespace Task2.Tests
     [TestFixture]
     public class SearchTest
     {
-        [OneTimeSetUp]
+        [SetUp]
         public void SetUpEverything()
         {
-            Singleton.GetInstance().Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
-            Singleton.GetInstance().Manage().Window.Maximize();
+           Singleton.GetInstance().Navigate().GoToUrl(TestData.baseUrl);
         }
 
         
@@ -23,7 +22,7 @@ namespace Task2.Tests
         [Test, TestCaseSource("list")]
         public void TestSearch(Cars car)
         {
-            Singleton.GetInstance().Navigate().GoToUrl(TestData.baseUrl);
+            
             SearchPage.StartSearch(car.Manufacture, car.Model, car.MinYear, car.MaxYear);
             CsvWriter.WriteInfoToCsv(SearchPage.GetSearchResults());
 

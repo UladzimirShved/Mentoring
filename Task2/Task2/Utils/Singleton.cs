@@ -28,7 +28,8 @@ namespace Task2
                     instance = BrowserFactory.GetBrowser(browser);
                 }
             
-
+            instance.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
+            instance.Manage().Window.Maximize();
             return instance;
         }
     }
