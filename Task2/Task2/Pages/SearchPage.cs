@@ -12,105 +12,109 @@ using System.Threading;
 
 namespace Task2
 {
-  public class SearchPage
-  {
-    static BaseElement manufactureList = new BaseElement(By.XPath("//select[@class='manufacture']"), "Manufacture list");
-    static BaseElement modelList = new BaseElement(By.XPath("//select[@class='model']"), "Model list");
-    static BaseElement minYearList = new BaseElement(By.XPath("//select[@name='min-year']"), "Min Year List");
-    static BaseElement maxYearList = new BaseElement(By.XPath("//select[@name='max-year']"), "Max Year list");
-
-    static BaseElement fastNavigationPages = new BaseElement(By.XPath("//td[@class='pagination']//li"), "Fast Navigation Pages");
-    static BaseElement nextPage = new BaseElement(By.XPath("//img[@src='/content/img/page-next.gif']"), "Next Page");
-
-    static BaseElement tmpPageCars = new BaseElement(By.XPath("//tbody"), "Full Table");
-    static BaseElement tmpCar = new BaseElement(By.XPath("//tr[@class='carRow']"), "Tmp Car");
-
-    public static void StartSearch(string manufacture, string model, int minYear, int maxYear)
+    public class SearchPage
     {
-      string manufactureXpath = $"//option[contains(text(),'{manufacture.ToString()}')]";
-      string modelXpath = $"//option[contains(text(),'{model.ToString()}')]";
-      string minYearXpath = $"//select[@name='min-year']//option[contains(text(),'{minYear.ToString()}')]";
-      string maxYearXpath = $"//select[@name='max-year']//option[contains(text(),'{maxYear.ToString()}')]";
+        static IWebDriver driver = Singleton.GetInstance();
 
-      BaseElement tmpManufacture = new BaseElement(By.XPath(manufactureXpath), "Tmp Manufacture");
-      BaseElement tmpModel = new BaseElement(By.XPath(modelXpath), "Tmp Model");
-      BaseElement tmpMinYear = new BaseElement(By.XPath(minYearXpath), "Tmp MinYear");
-      BaseElement tmpMaxYear = new BaseElement(By.XPath(maxYearXpath), "Tmp MaxYear");
+        static string manufactureListLocator = "//select[@class='manufacture']";
+        static string modelListLocator = "//select[@class='model']";
+        static string minYearListLocator = "//select[@name='min-year']";
+        static string maxYearListLocator = "//select[@name='max-year']";
 
-      manufactureList.MyClick();
-      tmpManufacture.MyClick();
+        static string fastNavigationPagesLocator = "//td[@class='pagination']//li";
+        static string nextPageLocator = "//img[@src='/content/img/page-next.gif']";
 
-      modelList.MyClick();
-      tmpModel.MyClick();
+        static string tmpCarLocator = "//tr[@class='carRow']";
 
-      minYearList.MyClick();
-      tmpMinYear.MyClick();
+        static string tmpCarNameLocator = ".//a//strong";
+        static string tmpCarLinkLocator = ".//a";
+        static string tmpCarCostLocator = ".//p[contains(text(), '$')]";
+        static string tmpCarYearLocator = ".//span[@class='year']";
 
+        static IWebElement carFromPage;
+        static IReadOnlyCollection<IWebElement> tmpPageCarsList;
 
-      maxYearList.MyClick();
-      tmpMaxYear.MyClick();
-      maxYearList.MyClick();
+        public static void StartSearch(string manufacture, string model, int minYear, int maxYear)
+        {
+            string manufactureXpathLocator = $"//option[contains(text(),'{manufacture.ToString()}')]";
+            string modelXpathLocator = $"//option[contains(text(),'{model.ToString()}')]";
+            string minYearXpathLocator = $"//select[@name='min-year']//option[contains(text(),'{minYear.ToString()}')]";
+            string maxYearXpathLocator = $"//select[@name='max-year']//option[contains(text(),'{maxYear.ToString()}')]";
+
+            Waiters.waitUntilElementVisible(manufactureListLocator).Click();
+            Waiters.waitUntilElementVisible(manufactureXpathLocator).Click();
+
+            Waiters.waitUntilElementVisible(modelListLocator).Click();
+            Waiters.waitUntilElementVisible(modelXpathLocator).Click();
+
+            Waiters.waitUntilElementVisible(minYearListLocator).Click();
+            Waiters.waitUntilElementVisible(minYearXpathLocator).Click();
+
+            Waiters.waitUntilElementVisible(maxYearListLocator).Click();
+            Waiters.waitUntilElementVisible(maxYearXpathLocator).Click();
+            Waiters.waitUntilElementVisible(maxYearListLocator).Click();
+
+        }
+
+        public static List<string> GetSearchResults()
+        {
+            string tmpCarName = "";
+            string tmpCarLink = "";
+            string tmpCarCost = "";
+            string tmpCarYear = "";
+            string tmpCarInfo = "";
+            int tmpPos = 0;
+            List<string> carsInfo = new List<string>();
+
+            if (Singleton.GetInstance().FindElements(By.XPath(fastNavigationPagesLocator)).Count != 0)
+            {
+                while (true)
+                {
+                    
+                    carFromPage = Waiters.waitStalenessOfElement(tmpCarLocator);
+                    tmpPageCarsList = driver.FindElements(By.XPath(tmpCarLocator));
+                    foreach (var car in tmpPageCarsList)
+                    {
+                        tmpCarName = car.FindElements(By.XPath(tmpCarNameLocator)).ToList().First().Text.ToString();
+                        tmpCarLink = car.FindElements(By.XPath(tmpCarLinkLocator)).ToList().First().GetAttribute("href").ToString();
+                        tmpCarCost = car.FindElement(By.XPath(tmpCarCostLocator)).Text.ToString();
+                        tmpPos = tmpCarCost.LastIndexOf('$');
+                        tmpCarCost = tmpCarCost.Substring(0, tmpPos + 1);
+                        tmpCarYear = car.FindElement(By.XPath(tmpCarYearLocator)).Text.ToString();
+                        tmpCarInfo = "model: " + tmpCarName + " href: " + tmpCarLink + " cost: " + tmpCarCost + " year: " + tmpCarYear;
+                        carsInfo.Add(tmpCarInfo);
+                    }
+                    try
+                    {
+                        driver.FindElement(By.XPath(nextPageLocator)).Click();
+
+                    }
+                    catch (NoSuchElementException e)
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                carFromPage = Waiters.waitStalenessOfElement(tmpCarLocator);
+                tmpPageCarsList = driver.FindElements(By.XPath(tmpCarLocator));
+                foreach (var car in tmpPageCarsList)
+                {
+                    tmpCarName = car.FindElements(By.XPath(tmpCarNameLocator)).ToList().First().Text.ToString();
+                    tmpCarLink = car.FindElements(By.XPath(tmpCarLinkLocator)).ToList().First().GetAttribute("href").ToString();
+                    tmpCarCost = car.FindElement(By.XPath(tmpCarCostLocator)).Text.ToString();
+                    tmpPos = tmpCarCost.LastIndexOf('$');
+                    tmpCarCost = tmpCarCost.Substring(0, tmpPos + 1);
+                    tmpCarYear = car.FindElement(By.XPath(tmpCarYearLocator)).Text.ToString();
+                    tmpCarInfo = "model: " + tmpCarName + " href: " + tmpCarLink + " cost: " + tmpCarCost + " year: " + tmpCarYear;
+                    carsInfo.Add(tmpCarInfo);
+                }
+            }
+
+            return carsInfo;
+        }
 
     }
-
-    public static List<string> GetSearchResults()
-    {
-      string tmpCarName = "";
-      string tmpCarLink = "";
-      string tmpCarCost = "";
-      string tmpCarYear = "";
-      string tmpCarInfo = "";
-      int tmpPos = 0;
-
-      List<string> carsInfo = new List<string>();
-
-      if (Singleton.GetInstance().FindElements(fastNavigationPages.locator).Count != 0)
-      {
-        while (nextPage.GetElement() != null)
-        {
-          Thread.Sleep(3000);
-          var tmpPageCarsList = Singleton.GetInstance().FindElements(tmpCar.locator);
-          foreach (var car in tmpPageCarsList)
-          {
-            tmpCarName = car.FindElements(By.XPath(".//a//strong")).ToList().First().Text.ToString();
-            tmpCarLink = car.FindElements(By.XPath(".//a")).ToList().First().GetAttribute("href").ToString();
-            tmpCarCost = car.FindElement(By.XPath(".//p[contains(text(), '$')]")).Text.ToString();
-            tmpPos = tmpCarCost.LastIndexOf('$');
-            tmpCarCost = tmpCarCost.Substring(0, tmpPos + 1);
-            tmpCarYear = car.FindElement(By.XPath(".//span[@class='year']")).Text.ToString();
-            tmpCarInfo = "model: " + tmpCarName + " href: " + tmpCarLink + " cost: " + tmpCarCost + " year: " + tmpCarYear;
-            carsInfo.Add(tmpCarInfo);
-          }
-          try
-          {
-            nextPage.MoveToElement();
-            nextPage.MyClick();
-          }
-          catch (NoSuchElementException e)
-          {
-            break;
-          }
-        }
-      }
-      else
-      {
-        var tmpPageCarsList = Singleton.GetInstance().FindElements(tmpCar.locator);
-        foreach (var car in tmpPageCarsList)
-        {
-          tmpCarName = car.FindElements(By.XPath(".//a//strong")).ToList().First().Text.ToString();
-          tmpCarLink = car.FindElements(By.XPath(".//a")).ToList().First().GetAttribute("href").ToString();
-          tmpCarCost = car.FindElement(By.XPath(".//p[contains(text(), '$')]")).Text.ToString();
-          tmpPos = tmpCarCost.LastIndexOf('$');
-          tmpCarCost = tmpCarCost.Substring(0, tmpPos + 1);
-          tmpCarYear = car.FindElement(By.XPath(".//span[@class='year']")).Text.ToString();
-          tmpCarInfo = "model: " + tmpCarName + " href: " + tmpCarLink + " cost: " + tmpCarCost + " year: " + tmpCarYear;
-          carsInfo.Add(tmpCarInfo);
-        }
-      }
-
-      return carsInfo;
-    }
-
-  }
 
 }

@@ -88,6 +88,15 @@ namespace Task2 {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на http://hub-cloud.browserstack.com/wd/hub/.
+        /// </summary>
+        internal static string browserstackURI {
+            get {
+                return ResourceManager.GetString("browserstackURI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на uladzimir5.
         /// </summary>
         internal static string browserstackUser {

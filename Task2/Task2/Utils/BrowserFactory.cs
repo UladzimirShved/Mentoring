@@ -35,7 +35,7 @@ namespace Task2
                     desiredCap.SetCapability("browserstack.key", TestData.browserstackKey);
 
                     driver = new RemoteWebDriver(
-                      new Uri("http://hub-cloud.browserstack.com/wd/hub/"), desiredCap
+                      new Uri(TestData.browserstackURI), desiredCap
                     );
                     break;
             }

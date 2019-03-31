@@ -139,4 +139,7 @@
   <data name="waitingTime" xml:space="preserve">
     <value>10</value>
   </data>
+  <data name="browserstackURI" xml:space="preserve">
+    <value>http://hub-cloud.browserstack.com/wd/hub/</value>
+  </data>
 </root>
