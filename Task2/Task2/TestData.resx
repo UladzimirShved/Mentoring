@@ -137,7 +137,7 @@
     <value>Task2/info.csv</value>
   </data>
   <data name="waitingTime" xml:space="preserve">
-    <value>10</value>
+    <value>20</value>
   </data>
   <data name="browserstackURI" xml:space="preserve">
     <value>http://hub-cloud.browserstack.com/wd/hub/</value>

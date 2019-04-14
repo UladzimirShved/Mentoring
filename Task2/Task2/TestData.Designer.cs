@@ -124,7 +124,7 @@ namespace Task2 {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на 10.
+        ///   Ищет локализованную строку, похожую на 20.
         /// </summary>
         internal static string waitingTime {
             get {

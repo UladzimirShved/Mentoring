@@ -13,39 +13,39 @@ namespace Task2
 {
     public class Waiters
     {
-        public static IWebElement waitUntilElementVisible(string locator)
+        public static IWebElement waitUntilElementVisible(IWebDriver driver, string locator)
         {
             int waitingtime = Int32.Parse(TestData.waitingTime);
-            IWebElement tmp = Singleton.GetInstance().FindElement(By.XPath(locator));
-            WebDriverWait wait = new WebDriverWait(Singleton.GetInstance(), TimeSpan.FromSeconds(waitingtime));
+            IWebElement tmp = driver.FindElement(By.XPath(locator));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(waitingtime));
             wait.Until(ExpectedConditions.ElementIsVisible(By.XPath(locator)));
             return tmp;
         }
-        public static IReadOnlyCollection<IWebElement> waitUntilElementsVisible(string locator)
+        public static IReadOnlyCollection<IWebElement> waitUntilElementsVisible(IWebDriver driver, string locator)
         {
             int waitingtime = Int32.Parse(TestData.waitingTime);
-            var tmp = Singleton.GetInstance().FindElements(By.XPath(locator));
-            WebDriverWait wait = new WebDriverWait(Singleton.GetInstance(), TimeSpan.FromSeconds(waitingtime));
+            var tmp = driver.FindElements(By.XPath(locator));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(waitingtime));
             wait.Until(ExpectedConditions.ElementIsVisible(By.XPath(locator)));
             return tmp;
         }
 
-        public static IWebElement waitUntilElementInvisible(string locator)
+        public static IWebElement waitUntilElementInvisible(IWebDriver driver, string locator)
         {
             int waitingtime = Int32.Parse(TestData.waitingTime);
-            IWebElement tmp = Singleton.GetInstance().FindElement(By.XPath(locator));
-            WebDriverWait wait = new WebDriverWait(Singleton.GetInstance(), TimeSpan.FromSeconds(waitingtime));
+            IWebElement tmp = driver.FindElement(By.XPath(locator));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(waitingtime));
             wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath(locator)));
             return tmp;
         }
-        public static IWebElement waitStalenessOfElement(string locator)
+        public static IWebElement waitStalenessOfElement(IWebDriver driver, string locator)
         {
             int waitingtime = Int32.Parse(TestData.waitingTime);
             
-            WebDriverWait wait = new WebDriverWait(Singleton.GetInstance(), TimeSpan.FromSeconds(waitingtime));
-            wait.Until(ExpectedConditions.StalenessOf(Singleton.GetInstance().FindElement(By.XPath(locator))));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(waitingtime));
+            wait.Until(ExpectedConditions.StalenessOf(driver.FindElement(By.XPath(locator))));
             wait.Until(ExpectedConditions.PresenceOfAllElementsLocatedBy(By.XPath(locator)));
-            IWebElement tmp = Singleton.GetInstance().FindElement(By.XPath(locator));
+            IWebElement tmp = driver.FindElement(By.XPath(locator));
             return tmp;
         }
     }

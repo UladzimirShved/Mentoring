@@ -9,29 +9,41 @@ using Task2.Utils;
 namespace Task2.Tests
 {
     [TestFixture]
-    public class SearchTest
+    public class SearchTest : BaseTest
     {
-        [SetUp]
-        public void SetUpEverything()
-        {
-           Singleton.GetInstance().Navigate().GoToUrl(TestData.baseUrl);
-        }
 
-        
         public static List<Cars> list = Cars.DeserializeCar();
         [Test, TestCaseSource("list")]
         public void TestSearch(Cars car)
         {
-            
-            SearchPage.StartSearch(car.Manufacture, car.Model, car.MinYear, car.MaxYear);
-            CsvWriter.WriteInfoToCsv(SearchPage.GetSearchResults());
-
+            page.StartSearch(car.Manufacture, car.Model, car.MinYear, car.MaxYear);
+            CsvWriter.WriteInfoToCsv(page.GetSearchResults());
         }
 
-        [OneTimeTearDown]
-        public void CleanAll()
+        [Test, TestCaseSource("list")]
+        public void TestSearchByMinYear(Cars car)
         {
-            Singleton.GetInstance().Quit();
+            page.StartSearchByMinYear(car.MinYear);
+            page.CheckAllCarsYear(car.MinYear);
         }
+
+        [Test]
+        public void TestSortPrice()
+        {
+            //не уверен, стоит ли разнести проверку сортировки ASC и DESC в разные тесты
+            page.SortCarsByPrice();
+            page.CheckAllPrices();
+
+            page.SortCarsByPrice();
+            page.CheckAllPrices();
+        }
+
+        [Test]
+        public void TestRandomAdsInfo()
+        {
+            page.GoIntoCarAds();
+            Assert.True(page.CheckInfoInAds(), "Info from the list of ads is not equal to info inside ads");
+        }
+
     }
 }
